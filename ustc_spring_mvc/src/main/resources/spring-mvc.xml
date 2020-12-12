@@ -1,9 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.ustc.controller"/>
+    <context:component-scan base-package="com.ustc.controller">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+<!--    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
+<!--        <property name="messageConverters">-->
+<!--            <list>-->
+<!--                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
+    <!--    mvc的注解驱动，后期开发配置文件先写上这句-->
+    <mvc:annotation-driven conversion-service="ConversionServiceFactoryBean"/>
+    
+<!--    <mvc:resources mapping="/js/**" location="/js/"/>-->
+
+    <mvc:default-servlet-handler/>
+
+    <!-- 声明转换器   让工厂造日期转换器的bean-->
+    <bean id="ConversionServiceFactoryBean" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="com.ustc.converter.DateConverter"></bean>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 配置文件上传解析器   -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--     上传文件总大小上限   -->
+        <property name="maxUploadSize" value="500000"/>
+        <property name="defaultEncoding" value="utf-8"/>
+        <!--     上传d单个文件的大小上限   -->
+        <property name="maxUploadSizePerFile" value="500000"/>
+    </bean>
 </beans>
