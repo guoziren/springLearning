@@ -5,7 +5,7 @@
 */target
 target/
 .settings/
-
+/out/
 ### IDEA ###
 .idea
 *.iws
