@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustc.dao.UserMapper">
+    <select id="findAll" resultType="com.ustc.domain.User">
+		select * from User
+	</select>
+
+	<select id="findById" parameterType="int" resultType="com.ustc.domain.User">
+		select * from User where id = #{id}
+	</select>
+
+    <insert id="add" parameterType="com.ustc.domain.User">
+		insert into user values(#{id},#{username},#{password})
+	</insert>
+
+    <update id="update" parameterType="com.ustc.domain.User">
+		update user set username=#{username},password=#{password} where id=#{id}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+        delete from user where id=#{id}
+    </delete>
+
+	<insert id="add2" parameterType="com.ustc.domain.User">
+		insert into user values (#{id},#{username},#{password},#{birthday})
+	</insert>
+</mapper>
